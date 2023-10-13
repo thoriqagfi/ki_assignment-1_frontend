@@ -14,7 +14,7 @@ export default function Home() {
           </div>
           <div>
             <label id="label-text">Password</label>
-            <input id="name" type="text" name="nama" placeholder="type password here..." className="w-full border-2 p-2 rounded-md"></input>
+            <input id="pass" type="text" name="password" placeholder="type password here..." className="w-full border-2 p-2 rounded-md"></input>
           </div>
         </form>
         <button type="submit" className="bg-blue-500 hover:bg-blue-600 p-2 rounded-md text-white">Submit</button>
