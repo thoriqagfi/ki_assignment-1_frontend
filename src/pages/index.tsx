@@ -1,6 +1,7 @@
 import { Open_Sans } from 'next/font/google'
 import axios from 'axios'
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 const open_sans = Open_Sans({ subsets: ['latin'] })
 
@@ -15,13 +16,18 @@ export default function Home() {
     password: ""
   };
 
+  const router = useRouter();
+
   const [user, setUser] = useState<user>(initialState);
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios.post("http://localhost:8080/user/register", user)
       .then((res) => {
-        console.log(res.data);
+        res.data.success = true;
+        const userID = res.data.id;
+
+        router.push(`/user?user_id=${userID}`)
       })
       .catch((error) => {
         console.log(error);
