@@ -22,6 +22,6 @@ export async function getServerSideProps() {
 
 export default function DatabaseItem() {
   return (
-    <div>This element from DatabaseItem's component!</div>
+    <div>This element from DatabaseItems component!</div>
   )
 }

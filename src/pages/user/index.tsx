@@ -2,6 +2,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Dialog } from "@headlessui/react";
+import withAuth from "@/hoc/withAuth";
+import useAuthStore from "@/store/useAuthStore";
 
 export type User = {
   id: string,
@@ -12,7 +14,8 @@ export type User = {
   files: File[]
 }
 
-export default function User() {
+export default withAuth(User, 'auth');
+function User() {
   // Check if user is logeed in or not
   // If not, redirect to login page
   // If yes, display user page
@@ -21,6 +24,8 @@ export default function User() {
   const [userFiles, setUserFiles] = useState<any>(null); // File[]
   const router = useRouter();
   const { user_id } = router.query;
+
+  const { user, isLoading, logout } = useAuthStore();
 
   // Upload file function
   const uploadFile = (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,44 +49,12 @@ export default function User() {
     }
   }
 
-  // Get the user profile
-  useEffect(() => {
-    if (user_id) {
-      axios.get(`http://localhost:8080/user/decrypted/${user_id}`)
-        .then((res) => {
-          setUserProfile(res.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-
-    // Get the file by user id
-    axios.get(`http://localhost:8080/file/user?user_id=${user_id}`).then((res) => {
-      setUserFiles(res.data);
-    }).catch((error) => {
-      console.log(error);
-    });
-  }, [user_id]);
-
-  console.log(userProfile)
-
-  // Open the file
-  const openFile = (file: any) => {
-    axios.get(`http://localhost:8080/file/detail?file_id=${file.id}&encryption_method=${file?.encryption_method}`)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
   return (
     <main className="">
       <div className="mx-auto my-auto w-full min-h-screen flex flex-col border-2 p-4 border-slate-950 gap-4 rounded-lg shadow-2xl">
         <div className="flex justify-between">
-          <h1 className="font-bold text-2xl">Hello, {userProfile?.username_aes}</h1>
+          <h1 className="font-bold text-2xl">Hello, {user?.name}</h1>
+          <button className="bg-red-500 hover:bg-red-600 p-2 rounded-md text-white" onClick={() => setIsOpen(true)}>Logout</button>
         </div>
         <div>
           <form encType="multipart/form-data" onSubmit={uploadFile} className="flex flex-col gap-y-4">
