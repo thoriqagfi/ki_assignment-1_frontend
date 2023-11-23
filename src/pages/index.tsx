@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import apiMock from '@/lib/axios-mock';
 import useAuthStore from '@/store/useAuthStore';
 import Link from 'next/link';
+import toast, { Toaster } from 'react-hot-toast';
 
 const open_sans = Open_Sans({ subsets: ['latin'] })
 
@@ -84,17 +85,20 @@ export default function Home() {
           console.log(res.data)
           res.data.success = true;
           const userID = res.data.id;
-
-          router.push(`/user?user_id=${userID}`)
+          router.push(`/login`)
         })
         .catch((error) => {
-          console.log(error);
+          toast.error(error.response.data.message);
         });
     }
   }
 
   return (
     <main className={`flex w-screen h-screen justify-center ${open_sans.className}`}>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
       <div className="mx-auto my-auto w-fit h-fit flex flex-col border-2 p-4 border-slate-950 gap-4 rounded-lg shadow-2xl">
         <h1 className="font-bold text-2xl">Register Page</h1>
         <form name="login-form" method="POST" className="flex flex-col gap-2" onSubmit={uploadFile} encType='multipart/form-data'>

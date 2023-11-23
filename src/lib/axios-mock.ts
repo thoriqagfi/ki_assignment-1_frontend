@@ -2,7 +2,7 @@ import axios from "axios"
 
 
 export const apiMock = axios.create({
-  baseURL: "http://localhost:3333",
+  baseURL: "http://localhost:8080",
   headers: {
     "Content-type": "application/json",
   },

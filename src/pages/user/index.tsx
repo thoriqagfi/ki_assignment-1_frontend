@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Dialog } from "@headlessui/react";
 import withAuth from "@/hoc/withAuth";
 import useAuthStore from "@/store/useAuthStore";
+import Link from "next/link";
 
 export type User = {
   id: string,
@@ -19,8 +20,6 @@ function User() {
   // Check if user is logeed in or not
   // If not, redirect to login page
   // If yes, display user page
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [userProfile, setUserProfile] = useState<any>(null);
   const [userFiles, setUserFiles] = useState<any>(null); // File[]
   const router = useRouter();
   const { user_id } = router.query;
@@ -54,7 +53,12 @@ function User() {
       <div className="mx-auto my-auto w-full min-h-screen flex flex-col border-2 p-4 border-slate-950 gap-4 rounded-lg shadow-2xl">
         <div className="flex justify-between">
           <h1 className="font-bold text-2xl">Hello, {user?.name}</h1>
-          <button className="bg-red-500 hover:bg-red-600 p-2 rounded-md text-white" onClick={() => setIsOpen(true)}>Logout</button>
+          <div className="flex gap-5">
+            <Link className="bg-green-500 hover:bg-green-600 p-2 rounded-md text-white" href={'/user/other-data'}>
+              Get Other User Data
+            </Link>
+            <button className="bg-red-500 hover:bg-red-600 p-2 rounded-md text-white">Logout</button>
+          </div>
         </div>
         <div>
           <form encType="multipart/form-data" onSubmit={uploadFile} className="flex flex-col gap-y-4">
@@ -86,7 +90,7 @@ function User() {
                   <td>{file?.name}</td>
                   <td className="text-center">{file?.created_at}</td>
                   <td className="flex gap-x-3 justify-center">
-                    <button className="bg-green-500 hover:bg-green-600 p-2 rounded-md text-white" onClick={() => setIsOpen(true)}>Detail</button>
+                    <button className="bg-green-500 hover:bg-green-600 p-2 rounded-md text-white">Detail</button>
                     <button className="bg-red-500 hover:bg-red-600 p-2 rounded-md text-white">Hapus</button>
                   </td>
                 </tr>
@@ -95,22 +99,6 @@ function User() {
           </tbody>
         </table>
       </div>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <Dialog.Panel>
-          <Dialog.Title>Deactivate account</Dialog.Title>
-          <Dialog.Description>
-            This will permanently deactivate your account
-          </Dialog.Description>
-
-          <p>
-            Are you sure you want to deactivate your account? All of your data
-            will be permanently removed. This action cannot be undone.
-          </p>
-
-          <button onClick={() => setIsOpen(false)}>Deactivate</button>
-          <button onClick={() => setIsOpen(false)}>Cancel</button>
-        </Dialog.Panel>
-      </Dialog>
     </main >
   )
 }

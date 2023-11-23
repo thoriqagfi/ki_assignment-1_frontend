@@ -68,10 +68,21 @@ export default function withAuth<T extends WithAuthProps = WithAuthProps>(
       }
       const loadUser = async () => {
         try {
-          const res = await apiMock.get<ApiReturn<User>>('/me');
+          const res = await apiMock.get('/user/decrypted/me');
 
           login({
-            ...res.data.data,
+            "id": res.data.id,
+            "username": res.data.username_aes,
+            "name": res.data.name_aes,
+            "email": res.data.email_aes,
+            "number": res.data.number_aes,
+            "password": res.data.password_aes,
+            "secret": res.data.secret,
+            "secret8byte": res.data.secret_key_8_byte,
+            "iv": res.data.iv,
+            "iv8byte": res.data.iv_8_byte,
+            "cv": res.data.cv_aes,
+            "id_card": res.data.id_card_aes,
             token: token + '',
           });
         } catch (err) {
