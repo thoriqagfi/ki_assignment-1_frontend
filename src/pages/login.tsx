@@ -76,7 +76,7 @@ export default function LoginPage() {
             <input id="password" type="password" name="password" placeholder="type password here..." className="w-full border-2 p-2 rounded-md"></input>
           </div>
           <button type="submit" className="bg-blue-500 hover:bg-blue-600 p-2 rounded-md text-white">Login</button>
-          <p>Do not have an account? <Link href={'/'}>Sign up here!</Link></p>
+          <p className="mt-3">Do not have an account? <Link href={'/'}>Sign up here!</Link></p>
         </form>
       </div>
     </main>
